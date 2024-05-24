@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Dashboard from '@/layouts/Dashboard';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import './App.css';
+
+import Overview from '@/pages/Overview';
+import Ticket from '@/pages/Ticket';
+import { palette } from '@/theme/palette';
+import { Route, Routes } from 'react-router-dom';
+import { customShadows } from './theme/custom-shadows';
+
+const theme = createTheme({
+  palette: {
+    ...palette,
+    mode: 'light', // You can change this to 'dark' if needed
+  },
+  shape: {
+    borderRadius: 4,
+  },
+  typography: {
+    fontFamily: ['Nunito', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
+    fontWeightBold: 700,
+  },
+  customShadows: customShadows('light'), // Pass the mode here
+});
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <div className="App">
+        {/* <ProtectedRoute path="/"> */}
+        <Dashboard>
+          <Routes>
+            <Route path="/" element={<Overview />} />
+            <Route path="/tickets" element={<Ticket />} />
+          </Routes>
+        </Dashboard>
+        {/* </ProtectedRoute> */}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
